@@ -54,8 +54,10 @@ def aStar(maze_inst):
 
 
 if __name__ == '__main__':
-    maze_inst = maze(5, 5)
-    maze_inst.CreateMaze()
+#    maze_inst = maze(5,5)
+#    maze_inst.CreateMaze(saveMaze=True)
+    maze_inst = maze()
+    maze_inst.CreateMaze(loadMaze='../../data/sample.maze')
     path = aStar(maze_inst)
 
     a = agent(maze_inst, footprints=True)

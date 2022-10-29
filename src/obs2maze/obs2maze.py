@@ -17,7 +17,7 @@ THRESHOLD = 0.25
 maze_py = []
 
 # open sampled maze
-with open('./data/sample.obs', 'r') as f:
+with open('../../data/sample.obs', 'r') as f:
     for l in csv.reader(f, quotechar='"', delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True):
         # parse each line
         north = float(l[1])
@@ -36,16 +36,17 @@ maze = np.zeros((len(maze_py), 6))
 for i in range(len(maze_py)):
     maze[i][0] = maze_py[i][0]
     maze[i][1] = maze_py[i][1]
-    maze[i][2] = (maze_py[i][2] < THRESHOLD)
-    maze[i][3] = (maze_py[i][3] < THRESHOLD)
-    maze[i][4] = (maze_py[i][4] < THRESHOLD)
-    maze[i][5] = (maze_py[i][5] < THRESHOLD)
+    maze[i][2] = (maze_py[i][2] > THRESHOLD)
+    maze[i][3] = (maze_py[i][3] > THRESHOLD)
+    maze[i][4] = (maze_py[i][4] > THRESHOLD)
+    maze[i][5] = (maze_py[i][5] > THRESHOLD)
     
 maze = maze[np.lexsort((maze[:,1],maze[:,0]))].astype(int)
 
-with open('./data/sample.maze', 'w') as f:
+with open('../../data/sample.maze', 'w') as f:
+    f.write('  cell  ,E,W,N,S\n')
     for i in range(len(maze_py)):
-        nextline = "({},{}): {{ \'E\': {}, \'W\': {}, \'N\': {}, \'S\': {} }}".format(maze[i][0], maze[i][1], maze[i][2], maze[i][3], maze[i][4], maze[i][5])
+        nextline = "\"({},{})\",{},{},{},{}".format(maze[i][0], maze[i][1], maze[i][2], maze[i][3], maze[i][4], maze[i][5])
         print(nextline)
         f.write(nextline)
         f.write('\n')
